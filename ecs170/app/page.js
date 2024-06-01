@@ -17,7 +17,7 @@ export default function Home() {
             <div className='bg-[#CC9090] p-4 pb-60 rounded-2xl mb-10'>
               <h2 className='text-3xl font-hammersmith text-white font-medium pb-4'>About me!</h2>
               <p className='font-hammersmith text-white text-lg font-medium max-w-2xl'>This app was created to help people predict their probability of Heart Disease.
-                  We do this by using.... short description!</p>
+                  We do this by using.... short description!!!</p>
             </div>
             <button className='px-8 py-4 w-fit h-fit text-dark font-hammersmith font-semibold text-2xl rounded-xl shadow-lg bg-gray-600 bg-opacity-10 flex'>Start Survey</button>
           </div>
