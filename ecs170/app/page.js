@@ -1,4 +1,6 @@
 import Image from 'next/image';
+import Link from 'next/link';
+
 
 export default function Home() {
   return (
@@ -19,7 +21,10 @@ export default function Home() {
               <p className='font-hammersmith text-white text-lg font-medium max-w-2xl'>This app was created to help people predict their probability of Heart Disease.
                   We do this by using.... short description!!!</p>
             </div>
-            <button className='px-8 py-4 w-fit h-fit text-dark font-hammersmith font-semibold text-2xl rounded-xl shadow-lg bg-gray-600 bg-opacity-10 flex'>Start Survey</button>
+            <Link href="/survey" passHref>
+              <button className='px-8 py-4 w-fit h-fit text-dark font-hammersmith font-semibold text-2xl
+                                  rounded-xl shadow-lg bg-gray-600 bg-opacity-10 flex'>Start Survey</button>
+            </Link>
           </div>
         </div>
     </main>
