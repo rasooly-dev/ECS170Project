@@ -4,9 +4,9 @@ const SurveyQuestion = ({ question, type, options, name, min, max, step }) => {
   const renderInputField = () => {
     switch (type) {
       case 'text':
-        return <input type="text" name={name} />;
+        return <input type="text" name={name} className='rounded-xl border shadow'/>;
       case 'int':
-        return <input type="number" name={name} min={min} max={max} step={step} />;
+        return <input type="number" name={name} min={min} max={max} step={step} className='rounded-xl border shadow'/>;
       case 'select':
         return (
           <select name={name}>
@@ -32,12 +32,15 @@ const SurveyQuestion = ({ question, type, options, name, min, max, step }) => {
   };
 
   return (
-    <div className='p-8 text-lg'>
-        <div className='flex flex-col w-fit'>
+    <div className='bg-[#FFFFFF] p-4 h-fit rounded-2xl mb-[23px] mt-[23px] ml-[10px] mr-[10px]'>
+      <div className='p-4 text-lg'>
+        <div className='flex flex-col w-fit font-hammersmith'>
             <label>{question}</label>
             {renderInputField()}
         </div>
+      </div>
     </div>
+    
   );
 };
 
