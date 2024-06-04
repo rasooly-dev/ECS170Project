@@ -2,8 +2,8 @@ import React from 'react';
 import SurveyQuestion from '@/components/SurveyQuestion';
 
 const SurveyPage = () => (
-  <div>
-    <h1>Survey Page</h1>
+  <div className=''>
+    <h1 className='text-4xl'>Survey Page</h1>
     <SurveyQuestion question="Enter your name" type="text" name="name" />
     <SurveyQuestion question="Enter your age" type="int" name="age" />
     <SurveyQuestion
