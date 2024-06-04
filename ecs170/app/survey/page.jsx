@@ -1,5 +1,6 @@
 import React from 'react';
 import SurveyQuestion from '@/components/SurveyQuestion';
+import Link from 'next/link';
 
 const SurveyPage = () => (
   <div className="font-hammersmith content-center">
@@ -42,10 +43,9 @@ const SurveyPage = () => (
         step="1"
         />
     </div>
-    <div className="flex justify-center mt-8">
-      <button type='button' className="bg-green-900 text-white text-xl px-4 py-2 shadow rounded-xl">Get Results!</button>
-    </div>
-    
+    <Link href="/results" className="flex justify-center">
+      <button type='button' className="bg-white text-indigo-900 font-bold text-xl px-4 py-2 shadow rounded-xl">Get Results!</button>
+    </Link>
   </div>
 );
 
