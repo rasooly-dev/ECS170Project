@@ -1,6 +1,15 @@
-import React from 'react';
+'use client'
+
+import React, {useState} from 'react';
 
 const SurveyQuestion = ({ question, type, options, name, min, max, step }) => {
+
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleRadioButtonClick = (option) => {
+    setSelectedOption(option);
+  };
+
   const renderInputField = () => {
     switch (type) {
       case 'text':
@@ -18,12 +27,23 @@ const SurveyQuestion = ({ question, type, options, name, min, max, step }) => {
           </select>
         );
       case 'radio':
-        return options.map((option, index) => (
-          <label key={index}>
-            <input type="radio" name={name} value={option} />
-            {option}
-          </label>
-        ));
+        return (
+          <div className="inline-flex">
+            {options.map((option,index) => (
+               <label
+               key={index}
+               className={`bg-white w-40 h-12 text-xl m-6 text-center font-thin font-['DM Sans'] border rounded-xl flex items-center justify-center cursor-pointer ${
+                 selectedOption === option ? 'bg-[#547FA7] text-white border-[#547FA7]' : ''
+               }`}
+               onClick={() => handleRadioButtonClick(option)}
+             >
+              <input type="radio" name={name} value={option} className='hidden' checked={selectedOption === option} onChange={() => {}}/>
+              {option}
+              </label>
+            ))}
+            <input type='hidden' name={name} value={selectedOption}/>
+          </div>
+        );
       case 'slider':
         return <input type="range" name={name} min={min} max={max} step={step} />;
       default:
@@ -32,15 +52,12 @@ const SurveyQuestion = ({ question, type, options, name, min, max, step }) => {
   };
 
   return (
-    <div className='bg-[#FFFFFF] p-4 h-fit rounded-2xl mb-[23px] mt-[23px] ml-[10px] mr-[10px]'>
-      <div className='p-4 text-lg'>
-        <div className='flex flex-col w-fit font-hammersmith'>
+      <div className='p-10 text-lg'>
+        <div className='flex flex-col w-full font-sans'>
             <label>{question}</label>
             {renderInputField()}
         </div>
       </div>
-    </div>
-    
   );
 };
 

@@ -1,16 +1,25 @@
 import React from 'react';
 import SurveyQuestion from '@/components/SurveyQuestion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const SurveyPage = () => (
-  <div className="font-hammersmith content-center">
-    <div className="">
-        <h1 className="font-bold text-4xl text-white ml-4 text-center">Please complete this survey</h1>
+
+  <div className="font-sans content-center">
+      <h1 className="text-4xl text-white ml-4 inline-flex font-thin">Please complete this survey
+      <Image src="./checkbox.svg"
+                  alt="Checkbox Icon"
+                  width={40}
+                  height={40}
+                /> 
+      </h1>
+
+      <div className="columns-2">
         <SurveyQuestion question="Enter your full name." type="text" name="name" />
         <SurveyQuestion question="Enter your age." type="int" name="age" />
         <SurveyQuestion
         question="Gender"
-        type="select"
+        type="radio"
         name="gender"
         options={['Male', 'Female']}
         />
@@ -42,11 +51,13 @@ const SurveyPage = () => (
         max="5"
         step="1"
         />
-    </div>
-    <Link href="/results" className="flex justify-center">
-      <button type='button' className="bg-white text-indigo-900 font-bold text-xl px-4 py-2 shadow rounded-xl">Get Results!</button>
+      </div>
+        
+    <Link href="/results" className="float-right">
+      <button type='button' className="font-sans bg-white hover:bg-[#000000] hover:text-white text-xl px-2 py-2 rounded drop-shadow">Submit</button>
     </Link>
   </div>
+
 );
 
 export default SurveyPage;
