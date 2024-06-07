@@ -38,7 +38,8 @@ def predict(data: HeartDiseaseInput):
         # bp, col, smoke, stroke
         prediction = model.predict(input_data)
 
-        return {"prediction": int(prediction[0])}
+        return {"prediction": int(prediction[0]), "high_bp": int(highBloodPressure), "high_chol": int(highChol) }
+
     
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
