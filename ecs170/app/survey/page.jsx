@@ -6,7 +6,7 @@ import Image from 'next/image';
 const SurveyPage = () => (
 
   <div className="font-sans content-center">
-      <h1 className="text-4xl text-white ml-4 inline-flex font-thin">Please complete this survey
+      <h1 className="text-4xl text-white ml-4 inline-flex">Please complete this survey
       <Image src="./checkbox.svg"
                   alt="Checkbox Icon"
                   width={40}
@@ -78,7 +78,7 @@ const SurveyPage = () => (
       </div>
         
     <Link href="/results" className="float-right">
-      <button type='button' className="font-sans bg-white hover:bg-[#000000] hover:text-white text-xl px-2 py-2 rounded drop-shadow">Submit</button>
+      <button type='button' className="font-sans bg-white hover:bg-custom-blue hover:text-white text-xl px-8 py-2 rounded drop-shadow">Submit</button>
     </Link>
   </div>
 

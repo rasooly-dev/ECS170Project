@@ -74,9 +74,9 @@ const SurveyQuestion = ({ question, type, options, description, name, min, max, 
 
   return (
       <div className='p-2 text-lg'>
-        <div className='flex flex-col w-full font-sans space-y-2'>
+        <div className='flex flex-col w-full h-full font-sans pt-4'>
             <label>{question}</label>
-            {renderInputField()}
+              {renderInputField()}
             {description && <p className="text-sm text-custom-gray mt-2">{description}</p>}
         </div>
       </div>
