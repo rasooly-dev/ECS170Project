@@ -2,7 +2,7 @@
 
 import React, {useState} from 'react';
 
-const SurveyQuestion = ({ question, type, options, name, min, max, step }) => {
+const SurveyQuestion = ({ question, type, options, description, name, min, max, step }) => {
 
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -10,12 +10,16 @@ const SurveyQuestion = ({ question, type, options, name, min, max, step }) => {
     setSelectedOption(option);
   };
 
+  const handleButtonClick = (option) => {
+    setSelectedOption(option);
+  };
+
   const renderInputField = () => {
     switch (type) {
       case 'text':
-        return <input type="text" name={name} className='rounded-xl border shadow'/>;
+        return <input type="text" name={name} className='rounded-xl border shadow h-[50px] font-sans '/>;
       case 'int':
-        return <input type="number" name={name} min={min} max={max} step={step} className='rounded-xl border shadow'/>;
+        return <input type="number" name={name} min={min} max={max} step={step} className='rounded-xl border shadow h-[50px]'/>;
       case 'select':
         return (
           <select name={name}>
@@ -28,12 +32,12 @@ const SurveyQuestion = ({ question, type, options, name, min, max, step }) => {
         );
       case 'radio':
         return (
-          <div className="inline-flex">
+          <div className="inline-flex space-x-4">
             {options.map((option,index) => (
                <label
                key={index}
-               className={`bg-white w-40 h-12 text-xl m-6 text-center font-thin font-['DM Sans'] border rounded-xl flex items-center justify-center cursor-pointer ${
-                 selectedOption === option ? 'bg-[#547FA7] text-white border-[#547FA7]' : ''
+               className={`w-40 h-12 text-xl text-center font-thin font-['DM Sans'] border rounded-xl flex items-center justify-center cursor-pointer ${
+                 selectedOption === option ? 'bg-custom-blue text-white border-custom-blue': 'bg-white'
                }`}
                onClick={() => handleRadioButtonClick(option)}
              >
@@ -45,17 +49,35 @@ const SurveyQuestion = ({ question, type, options, name, min, max, step }) => {
           </div>
         );
       case 'slider':
-        return <input type="range" name={name} min={min} max={max} step={step} />;
+        return (
+          <div className="flex space-x-10">
+            {[1, 2, 3, 4, 5].map((num) => (
+              <button
+                key={num}
+                className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-sans cursor-pointer ${
+                  selectedOption === num ? 'bg-custom-blue text-white' : 'bg-white'
+                }`}
+                onClick={() => handleButtonClick(num)}
+              >
+                {num}
+              </button>
+            ))}
+            <input type="hidden" name={name} value={selectedOption} />
+          </div>
+        );
+
+        
       default:
         return null;
     }
   };
 
   return (
-      <div className='p-10 text-lg'>
-        <div className='flex flex-col w-full font-sans'>
+      <div className='p-2 text-lg'>
+        <div className='flex flex-col w-full font-sans space-y-2'>
             <label>{question}</label>
             {renderInputField()}
+            {description && <p className="text-sm text-custom-gray mt-2">{description}</p>}
         </div>
       </div>
   );
