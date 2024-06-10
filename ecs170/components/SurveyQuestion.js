@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 
 const SurveyQuestion = ({ question, type, options, description, name, min, max, step }) => {
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(-1);
 
   const handleRadioButtonClick = (option) => {
     setSelectedOption(option);
@@ -54,6 +54,7 @@ const SurveyQuestion = ({ question, type, options, description, name, min, max, 
             {[1, 2, 3, 4, 5].map((num) => (
               <button
                 key={num}
+                type='button'
                 className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-sans cursor-pointer ${
                   selectedOption === num ? 'bg-custom-blue text-white' : 'bg-white'
                 }`}

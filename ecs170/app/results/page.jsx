@@ -1,15 +1,24 @@
+"use client"
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation'
+
 
 export default function Page() {
-    const heartAttackRisk = false;
-    const hasHighBloodPressure = true;
-    const hasHighCholestrol = false;
+    const searchParams = useSearchParams()
+
+    const heartAttackRisk = (searchParams.get('prediction') === '1') ? true : false;
+    const hasHighBloodPressure = (searchParams.get('high_bp') === '1') ? true : false;
+    const hasHighCholestrol = (searchParams.get('high_chol') === '1') ? true : false;
+    const name = searchParams.get('name')
+
+
+
     return (
         <main>
             <div className='flex flex-row' style={{ backgroundColor: '#FFFFFF', height: '100vh' }}>
                 <div className='flex w-full flex-col pt-9 pl-8 gap-y-10'>
                     <div>
-                        <h1 className='text-4xl text-black font-sans font-semibold'>Hi, Rani</h1>
+                        <h1 className='text-4xl text-black font-sans font-semibold'>Hi, {name}</h1>
                         <h2 className='text-3xl text-black font-sans font-medium'>Here is your result breakdown</h2>
                     </div>
                     
@@ -58,7 +67,7 @@ export default function Page() {
                     </div>
                 </div>
 
-                <div className="flex w-full flex-col pt-8 pr-3">
+                <div className="flex w-full flex-col pt-16 pr-3">
                     <h1 className='text-xl text-black font-sans font-semibold'>Metrics we collect and why?</h1>
                     <h1 className='text-mg text-black font-sans font-normal pb-6'>Find out how we determine your risk for heart disease and heart attack</h1>
                     
