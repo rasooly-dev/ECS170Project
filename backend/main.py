@@ -88,7 +88,7 @@ def predict(data: HeartDiseaseInput):
         print(X)
         prediction = model.predict(X)
 
-        return {"prediction": int(prediction[0]), "high_bp": int(highBloodPressure), "high_chol": int(highChol) }
+        return {"prediction": int(np.round(prediction[0])), "high_bp": int(highBloodPressure), "high_chol": int(highChol) }
 
     
     except Exception as e:
