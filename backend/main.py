@@ -4,8 +4,11 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import joblib
 import numpy as np
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+import tensorflow as tf
+from keras.saving import register_keras_serializable
+from tensorflow import keras
+import pickle
+import pandas as pd
 
 app = FastAPI()
 
@@ -25,12 +28,33 @@ app.add_middleware(
 )
 
 
+
+# @register_keras_serializable()
+@register_keras_serializable()
+def weighted_binary_crossentropy(weights):
+    @register_keras_serializable()
+    def loss(y_true, y_pred):
+        y_true = tf.cast(y_true, tf.float32)
+        weights_v = y_true * weights[1] + (1. - y_true) * weights[0]
+        return tf.keras.backend.binary_crossentropy(y_true, y_pred) * weights_v
+    return loss
+
+class_weights = {
+    0: 0.5519894511003669,
+    1: 5.308667810655841
+}
+
+custom_objects = {
+    'custom_loss_function': weighted_binary_crossentropy([class_weights[0], class_weights[1]])
+}
+
 # uvicorn main:app --reload
 # To reload the application
 
 
-# TODO: update this with actual model
-model = joblib.load("./Logistic_Regression.pkl")
+model = keras.models.load_model('NeuralNetwork4withDropout-32-6-0.2.keras')
+scalar = pickle.load(open('scaler.pkl', 'rb'))
+
 
 
 class HeartDiseaseInput(BaseModel):
@@ -52,9 +76,15 @@ def predict(data: HeartDiseaseInput):
         highBloodPressure = 1 if data.bloodPressure > 135 else 0
         highChol = 1 if data.chol > 240 else 0
 
-        input_data = np.array([[highBloodPressure, highChol, data.smoke, data.stroke, data.diabetes, data.physHealth, data.diffWalk, data.age]])
-        # bp, col, smoke, stroke
-        prediction = model.predict(input_data)
+        # HeartDiseaseorAttack    HighBP    HighChol    Smoker    Stroke    Diabetes    PhysHlth    DiffWalk    Age
+        features = np.array([highBloodPressure, highChol, data.smoke, data.stroke, data.diabetes, data.physHealth, data.diffWalk, data.age]).astype(np.float32)
+
+        df = pd.DataFrame([features], columns=["HighBP", "HighChol", "Smoker", "Stroke", "Diabetes", "PhysHlth", "DiffWalk", "Age"])
+        df[["PhysHlth", "Age"]] = scalar.transform(df[['PhysHlth', 'Age']])
+
+        X = df.iloc[0:1]
+        print(X)
+        prediction = model.predict(X)
 
         return {"prediction": int(prediction[0]), "high_bp": int(highBloodPressure), "high_chol": int(highChol) }
 
