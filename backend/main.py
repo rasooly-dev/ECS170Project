@@ -9,6 +9,8 @@ from keras.saving import register_keras_serializable
 from tensorflow import keras
 import pickle
 import pandas as pd
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
