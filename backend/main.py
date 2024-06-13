@@ -36,7 +36,7 @@ custom_objects = {
 
 app = FastAPI()
 
-model = keras.models.load_model('NN4withDropout.keras')
+model = keras.models.load_model('NeuralNetwork4withDropout-32-6-0.2.keras')
 scalar = pickle.load(open('scaler.pkl', 'rb'))
 
 
