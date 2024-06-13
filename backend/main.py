@@ -6,6 +6,7 @@ import joblib
 import numpy as np
 import tensorflow as tf
 from keras.saving import register_keras_serializable
+from tensorflow import keras
 import pickle
 import pandas as pd
 
@@ -35,7 +36,7 @@ custom_objects = {
 
 app = FastAPI()
 
-model = pickle.load(open('NN4withDropout.pkl', 'rb'))
+model = keras.models.load_model('NN4withDropout.keras')
 scalar = pickle.load(open('scaler.pkl', 'rb'))
 
 
@@ -59,37 +60,15 @@ def predict(data: HeartDiseaseInput):
         highBloodPressure = 1 if data.bloodPressure > 135 else 0
         highChol = 1 if data.chol > 240 else 0
 
-        binary_features = np.array([[highBloodPressure, highChol, data.smoke, data.stroke, data.diabetes, data.diffWalk]])
-        non_binary_features = np.array([[data.physHealth, data.age]])
-        non_binary_features_scaled = scalar.transform(non_binary_features)
-        # input_data_scaled = np.concatenate([binary_features, non_binary_features_scaled], axis=1)
         # HeartDiseaseorAttack    HighBP    HighChol    Smoker    Stroke    Diabetes    PhysHlth    DiffWalk    Age
-        input_data_scaled = np.concatenate([binary_features, non_binary_features_scaled], axis=1)
+        features = np.array([highBloodPressure, highChol, data.smoke, data.stroke, data.diabetes, data.physHealth, data.diffWalk, data.age]).astype(np.float32)
 
-        columns = ['highBloodPressure', 'highChol', 'smoke', 'stroke', 'diabetes', 'physHlth', 'diffWalk', 'age']
+        df = pd.DataFrame([features], columns=["HighBP", "HighChol", "Smoker", "Stroke", "Diabetes", "PhysHlth", "DiffWalk", "Age"])
+        df[["PhysHlth", "Age"]] = scalar.transform(df[['PhysHlth', 'Age']])
 
-        df = pd.DataFrame([np.array([binary_features["highBloodPressure"], binary_features["highChol"], binary_features["data.smoke"], binary_features["stroke"], binary_features["diabetes"], non_binary_features_scaled["physHealth"], binary_features["diffWalk"], non_binary_features["age"]])], columns=columns)
-
-        # df = pd.DataFrame(input_data_scaled, columns=columns)
-        
-        # df = df[['highBloodPressure', 'highChol', 'smoke', 'stroke', 'diabetes', 'physHlth', 'diffWalk', 'age']]
-
-        # binary_df = pd.DataFrame(binary_features, columns=['highBloodPressure', 'highChol', 'smoke', 'stroke', 'diabetes', 'diffWalk'])
-        # non_binary_df = pd.DataFrame(non_binary_features_scaled, columns=['physHlth', 'age'])
-        
-        # input_data_df = pd.concat([binary_df, non_binary_df], axis=1)
-        # columns = ['highBloodPressure', 'highChol', 'smoke', 'stroke', 'diabetes', 'physHlth', 'diffWalk', 'age']
-        # input_data_df = input_data_df[column_order]
-        # input_data_scaled = input_data_df.values
-
-
-
-        # input_data = np.array([[highBloodPressure, highChol, data.smoke, data.stroke, data.diabetes, data.physHealth, data.diffWalk, data.age]])
-        # # bp, col, smoke, stroke
-        # input_data_scaled = scalar.transform(input_data)
-
-
-        prediction = model.predict(df)
+        X = df.iloc[0:1]
+        print(X)
+        prediction = model.predict(X)
 
         return {"prediction": int(prediction[0]), "high_bp": int(highBloodPressure), "high_chol": int(highChol) }
 
