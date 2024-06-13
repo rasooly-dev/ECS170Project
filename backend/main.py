@@ -69,8 +69,9 @@ def predict(data: HeartDiseaseInput):
         X = df.iloc[0:1]
         print(X)
         prediction = model.predict(X)
+        print(prediction)
 
-        return {"prediction": int(prediction[0]), "high_bp": int(highBloodPressure), "high_chol": int(highChol) }
+        return {"prediction": int(np.round(prediction[0])), "high_bp": int(highBloodPressure), "high_chol": int(highChol) }
 
     
     except Exception as e:
